@@ -129,6 +129,23 @@
   <ItemGroup>
     <ClCompile Include="Proyecto_Grafos_JD.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Arco.h" />
+    <ClInclude Include="DLinkedList.h" />
+    <ClInclude Include="DNode.h" />
+    <ClInclude Include="Grafo.h" />
+    <ClInclude Include="Heap_Priority_Queue.h" />
+    <ClInclude Include="Linked_Queue.h" />
+    <ClInclude Include="Linked_Stack.h" />
+    <ClInclude Include="List.h" />
+    <ClInclude Include="Min_Heap.h" />
+    <ClInclude Include="Node.h" />
+    <ClInclude Include="Nodo.h" />
+    <ClInclude Include="Pair.h" />
+    <ClInclude Include="Priority_Queue.h" />
+    <ClInclude Include="Queue.h" />
+    <ClInclude Include="Stack.h" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
