@@ -3,5 +3,5 @@
     <Platform Name="x64" />
     <Platform Name="x86" />
   </Configurations>
-  <Project Path="Proyecto_Grafos_JD.vcxproj" />
+  <Project Path="Proyecto_Grafos_JD.vcxproj" Id="be707fee-2d30-49eb-a272-57f3779668aa" />
 </Solution>

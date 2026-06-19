@@ -105,6 +105,7 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
+      <AdditionalIncludeDirectories>C:\Users\6430\Documents\C\SFML\SFML-3.1.0\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -133,6 +134,7 @@
     <ClInclude Include="Arco.h" />
     <ClInclude Include="DLinkedList.h" />
     <ClInclude Include="DNode.h" />
+    <ClInclude Include="FindUnion.h" />
     <ClInclude Include="Grafo.h" />
     <ClInclude Include="Heap_Priority_Queue.h" />
     <ClInclude Include="Linked_Queue.h" />
