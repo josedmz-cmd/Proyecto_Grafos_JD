@@ -32,7 +32,8 @@ public:
     void unir(int x, int y) {
         int rx = find(x);
         int ry = find(y);
-        if (rx == ry) return;
+        if (rx == ry) 
+            return;
         if (rango[rx] < rango[ry]) {
             padre[rx] = ry;
         }

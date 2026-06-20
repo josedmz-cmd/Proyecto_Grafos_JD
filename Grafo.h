@@ -154,8 +154,10 @@ public:
             for (int i = 0; i < arcos.get_size(); ++i) {
                 Arco a = arcos.get_Element();
                 int vecino = -1;
-                if (a.origen == actual) vecino = a.destino;
-                else if (a.destino == actual) vecino = a.origen;
+                if (a.origen == actual) 
+                    vecino = a.destino;
+                else if (a.destino == actual) 
+                    vecino = a.origen;
                 if (vecino != -1 && !visitado[vecino]) {
                     visitado[vecino] = true;
                     resultado->agregarArco(a);
@@ -169,11 +171,81 @@ public:
     }
 
     Grafo* Prim(int inicio) {
-
+        Grafo* resultado = new Grafo();
+        resultado->numNodos = numNodos;
+        nodos.go_to_start();
+        for (int i = 0; i < numNodos; ++i) {
+            resultado->agregarNodo(nodos.get_Element());
+            nodos.next();
+        }
+        float* dist = new float[numNodos];
+        int* padre = new int[numNodos];
+        bool* enArbol = new bool[numNodos];
+        for (int i = 0; i < numNodos; ++i) {
+            dist[i] = 1e9;
+            padre[i] = -1;
+            enArbol[i] = false;
+        }
+        dist[inicio] = 0.0f;
+        Heap_Priority_Queue<Pair<int, float>> pq;
+        pq.insert(Pair<int, float>(inicio, 0.0f), 0);
+        while (!pq.is_empty()) {
+            Pair<int, float> p = pq.removeMin();
+            int u = p.key;
+            if (enArbol[u]) 
+                continue;
+            enArbol[u] = true;
+            if (padre[u] != -1) {
+                resultado->agregarArco(Arco(padre[u], u, dist[u]));
+            }
+            arcos.go_to_start();
+            for (int i = 0; i < arcos.get_size(); ++i) {
+                Arco a = arcos.get_Element();
+                int v = -1;
+                if (a.origen == u) 
+                    v = a.destino;
+                else if (a.destino == u) 
+                    v = a.origen;
+                if (v != -1 && !enArbol[v] && a.peso < dist[v]) {
+                    dist[v] = a.peso;
+                    padre[v] = u;
+                    pq.insert(Pair<int, float>(v, a.peso), (int)a.peso);
+                }
+                arcos.next();
+            }
+        }
+        delete[] dist;
+        delete[] padre;
+        delete[] enArbol;
+        return resultado;
     }
 
     Grafo* Kruskal() {
-
+        Grafo* resultado = new Grafo();
+        resultado->numNodos = numNodos;
+        nodos.go_to_start();
+        for (int i = 0; i < numNodos; ++i) {
+            resultado->agregarNodo(nodos.get_Element());
+            nodos.next();
+        }
+        FindUnion fu(numNodos);
+        Heap_Priority_Queue<Arco> pq;
+        arcos.go_to_start();
+        for (int i = 0; i < arcos.get_size(); ++i) {
+            Arco a = arcos.get_Element();
+            pq.insert(a, (int)a.peso);
+            arcos.next();
+        }
+        int arcosAgregados = 0;
+        while (!pq.is_empty() && arcosAgregados < numNodos - 1) {
+            Arco a = pq.removeMin();
+            if (fu.find(a.origen) != fu.find(a.destino)) {
+                fu.unir(a.origen, a.destino);
+                resultado->agregarArco(a);
+                arcosAgregados++;
+            }
+        }
+        return resultado;
     }
 
     Grafo* Dijkstra(int inicio, int destino) {
