@@ -2,7 +2,7 @@
 José Daniel Mora Zúñiga
 
 	CLASE MIN_HEAP
-	La clase Min_Heap implementa un heap binario mínimo (montículo) donde el
+	La clase Min_Heap implementa un heap binario mínimo donde el
 	elemento más pequeño está en la raíz. Se almacena en un arreglo dinámico.
 
 	Funcionalidades:

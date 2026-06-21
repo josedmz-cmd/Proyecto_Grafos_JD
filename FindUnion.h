@@ -2,13 +2,10 @@
 José Daniel Mora Zúñiga
 
     CLASE FINDUNION (UNION-FIND)
-    La clase FindUnion implementa la estructura de conjuntos disjuntos
-    con compresión de camino y unión por rango. Se utiliza en el algoritmo
-    de Kruskal para detectar ciclos.
+    La clase FindUnion se utiliza en el algoritmo de Kruskal para detectar ciclos.
 
     Funcionalidades:
-    - find(int): Encuentra la raíz del conjunto al que pertenece el elemento,
-                 aplicando compresión de camino.
+    - find(int): Encuentra la raíz del conjunto al que pertenece el elemento.
     - unir(int, int): Une dos conjuntos si son diferentes, usando rango.
 
     Miembros:

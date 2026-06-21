@@ -8,7 +8,7 @@ José Daniel Mora Zúñiga
 
 	Miembros:
 		origen, destino -> Índices de los nodos conectados.
-		peso           -> Valor numérico (distancia al cuadrado en este proyecto).
+		peso           -> Valor numérico (distancia al cuadrado en este contexto).
 
 	Métodos:
 		Constructores.
