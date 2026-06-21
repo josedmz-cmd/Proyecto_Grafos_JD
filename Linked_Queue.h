@@ -1,3 +1,24 @@
+/*
+José Daniel Mora Zúñiga
+
+	CLASE LINKED_QUEUE
+	La clase Linked_Queue implementa una cola (FIFO) utilizando una lista enlazada simple
+	con nodos centinela. Hereda de la interfaz Queue<E>.
+
+	Funcionalidades:
+	- enqueue(E): Agrega un elemento al final.
+	- dequeue(): Elimina y retorna el elemento del frente.
+	- front_value(): Retorna el elemento del frente sin eliminarlo.
+	- clear(): Elimina todos los elementos.
+	- is_empty(): Verifica si la cola está vacía.
+	- get_size(): Retorna la cantidad de elementos.
+	- print(): Muestra el contenido de la cola.
+
+	Estructura interna:
+		front -> Nodo centinela (anterior al primer elemento).
+		back  -> Puntero al último nodo.
+		size  -> Número de elementos.
+*/
 #pragma once
 #include <iostream>
 #include <stdexcept>

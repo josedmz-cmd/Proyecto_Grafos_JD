@@ -1,3 +1,19 @@
+/*
+José Daniel Mora Zúñiga
+
+	CLASE DNODE
+	La clase DNode representa un nodo de una lista doblemente enlazada.
+	Almacena un elemento de tipo genérico E y punteros al siguiente y anterior nodo.
+
+	Funcionalidades:
+	- Constructor con elemento, siguiente y anterior.
+	- Constructor con solo siguiente y anterior (para centinelas).
+
+	Miembros:
+		element   -> El dato almacenado.
+		next      -> Puntero al siguiente nodo.
+		previous  -> Puntero al nodo anterior.
+*/
 #pragma once
 
 template <typename E>

@@ -1,3 +1,37 @@
+/*
+José Daniel Mora Zúñiga
+
+	CLASE DLINKEDLIST
+	La clase DLinkedList implementa una lista doblemente enlazada con cursor,
+	heredando de la interfaz List<E>.
+	Utiliza nodos DNode con centinelas head y tail.
+
+	Funcionalidades:
+	- Inserción en posición actual (insert) y al final (append).
+	- Eliminación en posición actual (remove).
+	- Acceso y modificación del elemento actual (get_Element, set_element).
+	- Movimiento del cursor (go_to_start, go_to_end, go_to_pos, next, previous).
+	- Consultas (at_start, at_end, get_pos, get_size).
+	- Limpieza (clear) y visualización (print).
+
+	Estructura interna:
+		head y tail son nodos centinela.
+		current apunta al nodo anterior al elemento actual (para facilitar inserción/eliminación).
+
+	Métodos principales:
+		insert(E)        -> Inserta antes de la posición actual.
+		append(E)        -> Agrega al final.
+		remove()         -> Elimina el elemento actual.
+		get_Element()    -> Retorna el elemento actual.
+		set_element(E)   -> Modifica el elemento actual.
+		go_to_start()    -> Mueve cursor al inicio.
+		go_to_end()      -> Mueve cursor al final.
+		go_to_pos(int)   -> Mueve cursor a posición dada.
+		next()/previous()-> Avanza/retrocede el cursor.
+		clear()          -> Elimina todos los elementos.
+		get_size()       -> Retorna cantidad de elementos.
+		print()          -> Imprime la lista (marca el elemento actual con *).
+*/
 #pragma once
 
 #include <stdexcept>

@@ -1,3 +1,28 @@
+/*
+José Daniel Mora Zúñiga
+
+    CLASE GRAFO
+    La clase Grafo representa un grafo no dirigido etiquetado con nodos
+    en posiciones (x,y) y arcos con peso (distancia al cuadrado).
+    Incluye generación aleatoria y algoritmos: DFS, BFS, Prim, Kruskal, Dijkstra.
+
+    Funcionalidades:
+    - Generación de nodos aleatorios y conexiones según distancia y grado máximo.
+    - Algoritmos de árbol de expansión y ruta más corta.
+    - Dibujo con SFML (nodos, arcos, resaltados, indicadores de selección).
+
+    Miembros principales:
+        nodos, arcos (listas).
+        numNodos, distanciaMaxima, maxConexionesPorNodo.
+        anchoVentana, altoVentana.
+
+    Métodos:
+        getNodos(), getArcos(), getNumNodos().
+        agregarNodo(), agregarArco().
+        distanciaCuadrada().
+        DFS(), BFS(), Prim(), Kruskal(), Dijkstra().
+        dibujar().
+*/
 #pragma once
 
 #include "DLinkedList.h"
@@ -249,11 +274,172 @@ public:
     }
 
     Grafo* Dijkstra(int inicio, int destino) {
-
+        if (inicio < 0 || inicio >= numNodos || destino < 0 || destino >= numNodos)
+            return nullptr;
+        float* dist = new float[numNodos];
+        int* prev = new int[numNodos];
+        bool* definitivo = new bool[numNodos];
+        for (int i = 0; i < numNodos; ++i) {
+            dist[i] = 1e9;
+            prev[i] = -1;
+            definitivo[i] = false;
+        }
+        dist[inicio] = 0.0f;
+        Heap_Priority_Queue<Pair<int, float>> pq;
+        pq.insert(Pair<int, float>(inicio, 0.0f), 0);
+        while (!pq.is_empty()) {
+            Pair<int, float> p = pq.removeMin();
+            int u = p.key;
+            if (definitivo[u]) 
+                continue;
+            definitivo[u] = true;
+            if (u == destino) 
+                break;
+            arcos.go_to_start();
+            for (int i = 0; i < arcos.get_size(); ++i) {
+                Arco a = arcos.get_Element();
+                int v = -1;
+                if (a.origen == u) 
+                    v = a.destino;
+                else if (a.destino == u)
+                    v = a.origen;
+                if (v != -1 && !definitivo[v] && dist[u] + a.peso < dist[v]) {
+                    dist[v] = dist[u] + a.peso;
+                    prev[v] = u;
+                    pq.insert(Pair<int, float>(v, dist[v]), (int)dist[v]);
+                }
+                arcos.next();
+            }
+        }
+        if (dist[destino] == 1e9) {
+            delete[] dist;
+            delete[] prev;
+            delete[] definitivo;
+            return nullptr;
+        }
+        Grafo* resultado = new Grafo();
+        resultado->numNodos = numNodos;
+        nodos.go_to_start();
+        for (int i = 0; i < numNodos; ++i) {
+            resultado->agregarNodo(nodos.get_Element());
+            nodos.next();
+        }
+        int actual = destino;
+        while (actual != inicio) {
+            int ant = prev[actual];
+            arcos.go_to_start();
+            bool encontrado = false;
+            for (int i = 0; i < arcos.get_size(); ++i) {
+                Arco a = arcos.get_Element();
+                if ((a.origen == ant && a.destino == actual) || (a.origen == actual && a.destino == ant)) {
+                    resultado->agregarArco(a);
+                    encontrado = true;
+                    break;
+                }
+                arcos.next();
+            }
+            if (!encontrado) 
+                break;
+            actual = ant;
+        }
+        delete[] dist;
+        delete[] prev;
+        delete[] definitivo;
+        return resultado;
     }
 
-    void dibujar() {
-
+    void dibujar(sf::RenderWindow& window, Grafo* resaltado = nullptr, int nodoInicio = -1, int nodoDestino = -1) {
+        const sf::Color COLOR_FONDO = sf::Color(0, 0, 0);
+        const sf::Color COLOR_ARCO_NORMAL = sf::Color(255, 255, 255);
+        const sf::Color COLOR_ARCO_RESALTADO = sf::Color::Red;
+        const sf::Color COLOR_NODO_RELLENO = sf::Color(120, 81, 169);  // I like purple  https://html-color.codes/purple
+        const sf::Color COLOR_NODO_BORDE = sf::Color::White;
+        const float RADIO_NODO = 12.5f;
+        const float GROSOR_BORDE = 2.0f;
+        const int TAMANO_TEXTO = 13;
+        const sf::Color COLOR_TEXTO = sf::Color::Black;
+        const float RADIO_INDICADOR = 19.0f;
+        const sf::Color COLOR_INDICADOR_INICIO = sf::Color::Green;
+        const sf::Color COLOR_INDICADOR_DESTINO = sf::Color::Red;
+        sf::VertexArray lineas(sf::PrimitiveType::Lines);
+        arcos.go_to_start();
+        for (int i = 0; i < arcos.get_size(); ++i) {
+            Arco a = arcos.get_Element();
+            Nodo nOrigen; 
+            Nodo nDestino;
+            nodos.go_to_pos(a.origen);
+            nOrigen = nodos.get_Element();
+            nodos.go_to_pos(a.destino);
+            nDestino = nodos.get_Element();
+            lineas.append(sf::Vertex(sf::Vector2f(nOrigen.x, nOrigen.y), COLOR_ARCO_NORMAL));
+            lineas.append(sf::Vertex(sf::Vector2f(nDestino.x, nDestino.y), COLOR_ARCO_NORMAL));
+            arcos.next();
+        }
+        window.draw(lineas);
+        if (resaltado) {
+            sf::VertexArray lineasResaltadas(sf::PrimitiveType::Lines);
+            resaltado->arcos.go_to_start();
+            for (int i = 0; i < resaltado->arcos.get_size(); ++i) {
+                Arco a = resaltado->arcos.get_Element();
+                Nodo nOrigen;
+                Nodo nDestino;
+                nodos.go_to_pos(a.origen);
+                nOrigen = nodos.get_Element();
+                nodos.go_to_pos(a.destino);
+                nDestino = nodos.get_Element();
+                lineasResaltadas.append(sf::Vertex(sf::Vector2f(nOrigen.x, nOrigen.y), COLOR_ARCO_RESALTADO));
+                lineasResaltadas.append(sf::Vertex(sf::Vector2f(nDestino.x, nDestino.y), COLOR_ARCO_RESALTADO));
+                resaltado->arcos.next();
+            }
+            window.draw(lineasResaltadas);
+        }
+        sf::Font font;
+        bool fontLoaded = false;
+        if (font.loadFromFile("C:\\Windows\\Fonts\\arial.ttf"))
+            fontLoaded = true;
+        else if (font.loadFromFile("arial.ttf"))
+            fontLoaded = true;
+        nodos.go_to_start();
+        for (int i = 0; i < numNodos; ++i) {
+            Nodo n = nodos.get_Element();
+            sf::CircleShape circle(RADIO_NODO);
+            circle.setPosition(sf::Vector2f(n.x - RADIO_NODO, n.y - RADIO_NODO));
+            circle.setFillColor(COLOR_NODO_RELLENO);
+            circle.setOutlineColor(COLOR_NODO_BORDE);
+            circle.setOutlineThickness(GROSOR_BORDE);
+            window.draw(circle);
+            if (fontLoaded) {
+                sf::Text text;
+                text.setFont(font);
+                text.setString(std::to_string(n.id));
+                text.setCharacterSize(TAMANO_TEXTO);
+                text.setFillColor(COLOR_TEXTO);
+                text.setPosition(sf::Vector2f(n.x - 10.0f, n.y - 10.0f));
+                window.draw(text);
+            }
+            nodos.next();
+        }
+        if (nodoInicio != -1) {
+            Nodo n;
+            nodos.go_to_pos(nodoInicio);
+            n = nodos.get_Element();
+            sf::CircleShape indicador(RADIO_INDICADOR);
+            indicador.setPosition(sf::Vector2f(n.x - RADIO_INDICADOR, n.y - RADIO_INDICADOR));
+            indicador.setFillColor(sf::Color::Transparent);
+            indicador.setOutlineColor(COLOR_INDICADOR_INICIO);
+            indicador.setOutlineThickness(3.0f);
+            window.draw(indicador);
+        }
+        if (nodoDestino != -1) {
+            Nodo n;
+            nodos.go_to_pos(nodoDestino);
+            n = nodos.get_Element();
+            sf::CircleShape indicador(RADIO_INDICADOR);
+            indicador.setPosition(sf::Vector2f(n.x - RADIO_INDICADOR, n.y - RADIO_INDICADOR));
+            indicador.setFillColor(sf::Color::Transparent);
+            indicador.setOutlineColor(COLOR_INDICADOR_DESTINO);
+            indicador.setOutlineThickness(3.0f);
+            window.draw(indicador);
+        }
     }
 };
-

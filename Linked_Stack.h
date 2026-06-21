@@ -1,3 +1,23 @@
+/*
+José Daniel Mora Zúñiga
+
+	CLASE LINKED_STACK
+	La clase Linked_Stack implementa una pila (LIFO) utilizando una lista enlazada simple.
+	Hereda de la interfaz Stack<E> y utiliza la clase Node<E>.
+
+	Funcionalidades:
+	- push(E): Agrega un elemento al tope.
+	- pop(): Elimina y retorna el elemento del tope.
+	- top_value(): Retorna el elemento del tope sin eliminarlo.
+	- clear(): Elimina todos los elementos.
+	- is_empty(): Verifica si la pila está vacía.
+	- get_size(): Retorna la cantidad de elementos.
+	- print(): Muestra el contenido de la pila.
+
+	Estructura interna:
+		top   -> Puntero al nodo del tope.
+		size  -> Número de elementos.
+*/
 #pragma once
 #include <iostream>
 #include <stdexcept>
